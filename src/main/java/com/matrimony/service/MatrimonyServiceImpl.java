@@ -1,15 +1,17 @@
 package com.matrimony.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-<<<<<<< HEAD
-=======
+import com.matrimony.dto.DashboardDto;
 import com.matrimony.dto.LoginDto;
 import com.matrimony.dto.ProfileDto;
->>>>>>> jyoti
+import com.matrimony.entity.Dashboard;
 import com.matrimony.entity.Login;
 import com.matrimony.entity.Profile;
+import com.matrimony.repository.DashboardRepository;
 import com.matrimony.repository.LoginRepository;
 import com.matrimony.repository.ProfileRepository;
 
@@ -20,22 +22,15 @@ public class MatrimonyServiceImpl implements MatrimonyService {
 
 	@Autowired
 	private LoginRepository loginRepository;
+	
+	@Autowired
+	private DashboardRepository dashboardRepository;
 
-<<<<<<< HEAD
-	public Login createProfile(Profile profile) {
-
-		Login login = new Login();
-		login.setPassword(profile.getFirstName());
-		login.setLoginName(profile.getFirstName().substring(0, 3) + profile.getLastName().substring(0, 3));
-		login.setActionMessage("success");
-
-=======
 	public Login createProfile(ProfileDto profileDto) {
 
 		Profile profile = new Profile();
 		profile.setAge(profileDto.getAgeDto());
 		profile.setCaste(profileDto.getCasteDto());
-		profile.setAge(profileDto.getAgeDto());
 		profile.setEmailId(profileDto.getEmailIdDto());
 		profile.setDob(profileDto.getDobDto());
 		profile.setFirstName(profileDto.getFirstNameDto());
@@ -52,7 +47,6 @@ public class MatrimonyServiceImpl implements MatrimonyService {
 		login.setActionMessage("success");
 
 		// login.setProfile(profileDto);
->>>>>>> jyoti
 		login.setProfile(profile);
 
 		profileRepo.save(profile);
@@ -61,40 +55,67 @@ public class MatrimonyServiceImpl implements MatrimonyService {
 		return login;
 	}
 
-	@Override
-<<<<<<< HEAD
-	public Login validateLogin(String loginName, String password) {
-		Login login = new Login();
-
-		login = loginRepository.findByLoginNameAndPassword(loginName, password);
-=======
 	public Login validateLogin(LoginDto loginDto) {
 		Login login = new Login();
 		login = loginRepository.findByLoginNameAndPassword(loginDto.getLoginName(), loginDto.getPassword());
->>>>>>> jyoti
 		if (login != null) {
 			login.setActionMessage("success");
 			return login;
 		} else {
 			Login login1 = new Login();
-<<<<<<< HEAD
-			login1.setLoginName(loginName);
-			login1.setActionMessage(loginName + "is not a valid user");
-=======
 			login1.setLoginName(loginDto.getLoginName());
 			login1.setActionMessage(loginDto.getLoginName() + "is not a valid user");
->>>>>>> jyoti
 			return login1;
 		}
 	}
 
-<<<<<<< HEAD
-=======
+	public Dashboard updateAcceptReject(DashboardDto profileDto) {
+		Dashboard newOrUpdated = null;
+		Integer actionProfileID = profileDto.getActionProfileId();
+		Dashboard actionProfile = dashboardRepository.findByProfileId(actionProfileID);
+		if (actionProfile != null) {
+			if (profileDto.getAction().equalsIgnoreCase("Accept")) {
+				actionProfile.setAcceptedProfileID(profileDto.getProfileId());
+				actionProfile.setAcceptedProfileName(profileDto.getProfileName());
+			} else if (profileDto.getAction().equalsIgnoreCase("Reject")) {
+				actionProfile.setRejectedProfileId(profileDto.getProfileId());
+				actionProfile.setRejectedProfileName(profileDto.getProfileName());
+			}
+			newOrUpdated = dashboardRepository.save(actionProfile);
+		} else {
+			Dashboard newProfile = new Dashboard();
+			newProfile.setProfileId(profileDto.getActionProfileId());
+			newProfile.setProfileName(profileDto.getActionProfileName());
+			if (profileDto.getAction().equalsIgnoreCase("Accept")) {
+				newProfile.setAcceptedProfileID(profileDto.getProfileId());
+				newProfile.setAcceptedProfileName(profileDto.getProfileName());
+			} else if (profileDto.getAction().equalsIgnoreCase("Reject")) {
+				newProfile.setRejectedProfileId(profileDto.getProfileId());
+				newProfile.setRejectedProfileName(profileDto.getProfileName());
+			}
+			newOrUpdated = dashboardRepository.save(newProfile);
+		}
+		return newOrUpdated;
+	}
+
 	@Override
 	public Profile getFilteredProfile(Integer profileId) {
 
 		return null;
 	}
+	@Override
+    public List<Dashboard> getInterestedProfiles(Integer profileId) {
+        return dashboardRepository.getAllInterestedProfiles(profileId);
+    }
 
->>>>>>> jyoti
+    @Override
+    public List<Dashboard> getAcceptedProfiles(Integer profileId) {
+        return dashboardRepository.getAllAccepetedProfiles(profileId);
+    }
+
+    @Override
+    public List<Dashboard> getRejectedProfiles(Integer profileId) {
+        return dashboardRepository.getAllRejectedProfiles(profileId);
+    }
+
 }
