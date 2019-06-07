@@ -1,5 +1,6 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '@polymer/paper-card/paper-card.js';
+import '@vaadin/vaadin-grid/vaadin-grid.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
@@ -7,13 +8,17 @@ import '@polymer/paper-item/paper-item.js';
 import '@polymer/paper-listbox/paper-listbox.js';
 import '@polymer/iron-form/iron-form.js';
 import '@polymer/paper-toast/paper-toast.js';
-import '@vaadin/vaadin-grid/vaadin-grid.js';
+import '@polymer/iron-ajax/iron-ajax.js';
+//import '@vaadin/vaadin-grid/vaadin-grid.js';
 // Import template repeater
 import '@polymer/polymer/lib/elements/dom-repeat.js';
 
+import '@polymer/iron-collapse/iron-collapse.js';
+import '@polymer/paper-badge/paper-badge.js';
+
 
 // Define the element's API using an ES2015 class
-class LoginElement extends PolymerElement {
+class DashboardElement extends PolymerElement {
 
   // Define optional shadow DOM template
   static get template() {
@@ -61,19 +66,26 @@ class LoginElement extends PolymerElement {
     border: 6px solid beige;
 
   }
-  .register{
-    background-color:  #d9475c;
-    padding: 1%;
-    color: white
+  iron-collapse {
+    border: 1px solid #dedede;
+    border-top: none;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    @apply --shadow-elevation-2dp;
   }
-      </style>
+  paper-item{
+    background-color:cadetblue;
+    color:white;
+    height:12px;
+    border-bottom: 2px solid red;
+  } 
+  .bkg{
+    background-color:#d9475c;
+    color:white;
+  }
+</style>
 
-        <!-- shadow DOM for your element -->
-   
- 
-  <!-- data bindings in shadow DOM -->
-  
-
+      
 <paper-card >
 <!--alert-dialog-->
 
@@ -82,77 +94,46 @@ class LoginElement extends PolymerElement {
   <paper-button class="custom indigo customizedDangercss" style="float:right" dialog-confirm autofocus>OK</paper-button>
  </paper-dialog>
   <div class="card-content" style="background-color:beige">
-  <paper-tabs selected="0">
-        <paper-tab id="login"  data-item$="login" on-click="_switchBetweenLoginAndCreate">Login</paper-tab>
-        <paper-tab id="create" data-item$="create" on-click="_switchBetweenLoginAndCreate">Create Account</paper-tab>
-          
-</paper-tabs>
+
   </div>
-
-  <!--SignIn  Form End-->
-  <template is="dom-if" if="{{showLoginForm}}">
-          <div class="card-actions"  style="margin:20px;border:5px solid beige; background-color:lavenderblush">
-              <p class="register">Login to continue..</p>
-              <div class="horizontal justified">
-            <iron-form id="loginForm">
-              <form>
-                            <paper-input  value="{{username}}" always-float-label label="User" error-message="Enter First Name" auto-validate required></paper-input>
-                            <paper-input type="password" value="{{password}}" always-float-label label="Password" error-message="Enter First Name" auto-validate required></paper-input>
-                            <paper-button class="custom indigo customizedcss"  
-                            on-click="_loginAuthication">Login</paper-button>
-                            <paper-button toggles class="custom indigo customizedDangercss" class="green" on-click="_resetForm">Reset</paper-button>
-                </form>
-                
-              </iron-form> 
-        </div>
-    </template>
-    <!--SignIn  Form End-->
-
-
-    <!--Account Creation Form start-->
-    <template is="dom-if" if="{{showSignUpForm}}">
-    <div class="card-actions"  style="margin:20px;border:5px solid beige; background-color:lavenderblush">
-            <p class="register">REGISTER FREE
-            <small>Meet over 10 lakh profiles</small></p>
-            <div class="horizontal justified">
-          <iron-form id="ceateAccountForm">
-            <form>
-                              <paper-input  value="{{firstName}}" always-float-label label="FirstName" error-message="Enter First Name" auto-validate required></paper-input>
-                              <paper-input  value="{{lastName}}" always-float-label label="LastName" error-message="Enter First Name" auto-validate required></paper-input>
-                              <paper-input type="number" value="{{accountNumber}}" always-float-label label="AccountNumber" error-message="Enter First Name" auto-validate required></paper-input>
-                            
-                              <paper-input type="email" value="{{emailId}}" always-float-label label="EmailId" error-message="Enter First Name" auto-validate required></paper-input>
-                              <paper-input  value="{{pancard}}" always-float-label label="Pancard" error-message="Enter First Name" auto-validate required></paper-input>
-                              <paper-input  type="number" value="{{contactNumber}}" always-float-label label="ContactNumber" error-message="Enter First Name" auto-validate required></paper-input>
-                              
-
-                          <paper-button class="custom indigo customizedcss"  
-                          on-click="_submitCreateAccountForm">Create Account</paper-button>
-                  
-                          <paper-button toggles class="custom indigo customizedDangercss" class="green" on-click="_resetForm">Reset</paper-button>
-              </form>
+ 
+          <div class="card-actions"  style="margin:20px;border:5px solid beige; background-color:bisque">
+              <p>Profiles:</p>
+              <paper-tabs selected="0">
+                       <paper-tab id="productGroupName1"  data-item$="profile" on-click="_switchBetweenLoginAndCreate">
+                Profiles
               
-                </iron-form> 
-          </iron-form> 
-      </div>
-    </template>
+               </paper-tab>
+              <paper-tab id="productGroupName2" data-item$="interested" on-click="_switchBetweenLoginAndCreate">
+                       Interested
+              </paper-tab>
+              <paper-tab id="productGroupName3" data-item$="accepted" on-click="_switchBetweenLoginAndCreate">
+                     Accepted
+              
+              </paper-tab>
+              <paper-tab id="productGroupName3" data-item$="rejected" on-click="_switchBetweenLoginAndCreate">
+                      Rejected
+              
+              </paper-tab>
+                
+      </paper-tabs>
+            
+    
+
+    
+
+
+            
+         
     <!--Account Creation Form End-->
 
   </div>
-                <iron-ajax
-                      id="ajaxSinUp"
-                      on-response="_signUpHandler"
-                      on-error ="_errorHandler"
-                      debounce-duration="300">
-              </iron-ajax>  
 
 
-              <iron-ajax
-                id="signInAjax"
-                on-response="_signInHandler"
-                on-error ="_errorHandler"
-                debounce-duration="300">
-            </iron-ajax> 
+ 
+</div>
+             
+           
 <!--Noraml Alert dialog-->
     <paper-dialog id="alertdialog">
             <h2>[[alertMsg]]</h2>
@@ -172,7 +153,132 @@ class LoginElement extends PolymerElement {
 </paper-dialog>
 
 <!--Details  Dialog End-->
+
+
+<iron-ajax
+      id="profileAjax"
+      on-response="_profileHandler"
+      on-error ="_errorHandler"
+      debounce-duration="300">
+</iron-ajax>  
+
+<iron-ajax
+        id="interestedAjax"
+        on-response="_interestedHanler" 
+        on-error ="_errorHandler"
+        debounce-duration="300">
+</iron-ajax>  
+
+<iron-ajax
+    id="acceptedAjax"
+    on-response="_acceptedAjaxHanler"
+    on-error ="_errorHandler"
+    debounce-duration="300">
+</iron-ajax>  
+
+
+<iron-ajax
+        id="rejectedAjax"
+        on-response="_rejectedHandler"
+        on-error ="_errorHandler"
+        debounce-duration="300">
+        </iron-ajax> 
+       
+        <iron-ajax
+        id="interestSendAjax"
+        on-response="_interestSendHandler"
+        on-error ="_errorHandler"
+        debounce-duration="300">
+        </iron-ajax> 
+
+
+        
 </paper-card>
+<!--Profile List-->
+<template is="dom-if" if="{{profileListFlag}}">
+   <div class="card-actions"  style="margin:20px;border:1px solid gray; background-color:ivory;padding:1%">
+           <p>Profiles:</p>
+           <vaadin-grid theme="row-dividers" column-reordering-allowed multi-sort items={{filteredProfiles}}>
+                 <vaadin-grid-column width="9em" path="firstName"></vaadin-grid-column>
+                 <vaadin-grid-column width="9em" path="lastName"></vaadin-grid-column>
+                 <vaadin-grid-column width="9em" path="emailId"></vaadin-grid-column>
+                 <vaadin-grid-column width="9em" path="salary"></vaadin-grid-column>
+                 <vaadin-grid-column width="9em" path="caste"></vaadin-grid-column>
+                 <vaadin-grid-column width="9em" path="action">
+                 <template> 
+                      <paper-button raised class="custom indigo bkg" id="[[]]" data-set$={{item}} on-click="_interested">Interested</paper-button>
+                </template>
+                </vaadin-grid-column>
+         </vaadin-grid>
+       
+     </div>
+   </template>
+   <!--Profile List End -->
+
+   <!--Interested List-->
+   <template is="dom-if" if="{{interestedFlag}}">
+      <div class="card-actions"  style="margin:20px;border:1px solid gray; background-color:ivory;padding:1%">
+              <p>Interested Profiles:</p>
+          <div></div>
+        <vaadin-grid theme="row-dividers" column-reordering-allowed multi-sort items={{filteredInterested}}>
+                      <vaadin-grid-column width="9em" path="interestedProfileName"></vaadin-grid-column>
+                     
+                      <vaadin-grid-column width="9em" path="accept">
+                      <template> 
+
+                                <paper-button raised class="custom indigo  bkg">Accept</paper-button>
+
+                    </template>
+                      </vaadin-grid-column>
+ 
+                      <vaadin-grid-column width="9em" path="reject">
+                      <template>
+                            <paper-button toggles raised class="custom green bkg">Reject</paper-button>
+
+                    </template>
+                      </vaadin-grid-column>
+                     <!--
+                      <vaadin-grid-column width="9em" path="emailId"></vaadin-grid-column>
+                      <vaadin-grid-column width="9em" path="salary"></vaadin-grid-column>
+                      <vaadin-grid-column width="9em" path="caste"></vaadin-grid-column>-->
+            </vaadin-grid>-->
+          
+        </div>
+      </template>
+   <!--Interested List End -->
+
+   <!--Accepated List-->
+   <template is="dom-if" if="{{acceptedFlag}}">
+      <div class="card-actions"  style="margin:20px;border:1px solid gray; background-color:ivory;padding:1%">
+              <p>Accepated Profiles:</p>
+              <div></div>
+              <vaadin-grid theme="row-dividers" column-reordering-allowed multi-sort items={{filteredAccepted}}>
+                    <vaadin-grid-column width="9em" path="acceptedProfileName"></vaadin-grid-column>
+                   <!-- <vaadin-grid-column width="9em" path="lastName"></vaadin-grid-column>
+                    <vaadin-grid-column width="9em" path="emailId"></vaadin-grid-column>
+                    <vaadin-grid-column width="9em" path="salary"></vaadin-grid-column>
+                    <vaadin-grid-column width="9em" path="caste"></vaadin-grid-column>-->
+            </vaadin-grid>
+          
+        </div>
+      </template>
+   <!--Accepated List End -->
+
+   <!--Rejected List-->
+   <template is="dom-if" if="{{rejectedFlag}}">
+      <div class="card-actions"  style="margin:20px;border:1px solid gray; background-color:ivory;padding:1%">
+              <p>Rejected:</p>
+              <vaadin-grid theme="row-dividers" column-reordering-allowed multi-sort items={{filteredRejected}}>
+                      <vaadin-grid-column width="9em" path="firstName"></vaadin-grid-column>
+                      <vaadin-grid-column width="9em" path="lastName"></vaadin-grid-column>
+                      <vaadin-grid-column width="9em" path="emailId"></vaadin-grid-column>
+                      <vaadin-grid-column width="9em" path="salary"></vaadin-grid-column>
+                      <vaadin-grid-column width="9em" path="caste"></vaadin-grid-column>
+            </vaadin-grid>
+          
+        </div>
+      </template>
+   <!--Rejected List End -->
     `;
   }
 
@@ -190,11 +296,7 @@ class LoginElement extends PolymerElement {
       greeting: {
         type: String
       },
-      baseUrl:
-      {
-        type: String,
-        value: "http://192.168.43.22:8090/app"
-      },
+     
       subUrl:
       {
         type: String,
@@ -208,145 +310,349 @@ class LoginElement extends PolymerElement {
         type:Boolean,
         value:true
       },
-      showSignUpForm:{
+      showSelectedGroupProductlist:{
         type:Boolean,
         value:false
       },
       createdAccountDetailsDialog:{
         type:Object, 
         value:{}
+      },
+      allProdu:{
+        type:Array, 
+        value:[]
+      },
+      baseUrl:{
+        type:String,
+        value: "http://10.117.189.210:8090/app"
+      },
+      triggerId:{
+        type:String,
+        value:""
+      },
+      collapseId:{
+        type:String,
+        value:"colid"
+      },//SavingsCount,MortgageCount, MortgageCount
+      SavingsCount:{
+        type:Number,
+        value:0
+      },
+      MortgageCount:{
+        type:Number,
+        value:0
+      },
+      PaymentCount:{
+        type:Number,
+        value:0
+      },
+   
+      productMorgageList:{
+        type:Array,
+        value:[]
+      },
+      productPaymentList:{
+        type:Array,
+        value:[]
+      },
+      productSavingList:{
+        type:Array,
+        value:[]
+      },
+      profileListFlag:{
+        type:Boolean,
+        value:false
+      },
+      products:{
+        type:Array,
+        value:[]
+      },
+      selectedProductDetails:{
+        type:Object,
+        value:{}
+      },
+      productUniqId:{
+        type:Number,
+        value:0
+      },
+      profileListFlag:{
+        type:Boolean,
+        value:false,
+      },
+      interestedFlag:{
+        type:Boolean,
+        value:false,
+      },
+      acceptedFlag:{
+        type:Boolean,
+        value:false,
+      },
+      rejectedFlag:{
+        type:Boolean,
+        value:false,
+      },
+      filteredProfiles:{
+        type:Array,
+        value:[]
+      },
+      filteredInterested:{
+        type:Array,
+        value:[]
       }
+     
+     //////profileListFlag,interestedFlag,acceptedFlag,rejectedFlag 
     }
   }
-
   constructor() {
     super();
     
   }
   connectedCallback(){
-    super.connectedCallback();
-   //this loggedInUsrDetails= JSON.parse(sessionStorage.getItem("userDetails"));
-    //sessionStorage.setItem("userDetails", JSON.stringify());
+        super.connectedCallback();
+        this._getProfile();
+       // this._getAllProductGroup();
+        //this._getupdateOverview();
 
   }
-  _switchBetweenLoginAndCreate(event){
-    console.log('_switchBetweenLoginAndCreate', event.target.dataset.item$);
-    let falg = event.target.dataset.item$;
-    if(falg=='login'){
-      this.showLoginForm = true;
-      this.showSignUpForm = false;
-      //this.$.signInFormDialog.open();
-    }else{
-      this.showLoginForm = false;
-      this.showSignUpForm = true;
-     // this.$.signUpFormDialog.open();
-      
-    }
+  _interested(event){//interestedAjax,_interestedAjax/ interestSendAjax,_interestSendHandler
+    //{profileId, profileName, actionProfileId, actionProfileName, action (Interest,accept,reject)
+    console.log('_interested',  JSON.parse(event.target.dataset.set));
+    let actionProfileData= JSON.parse(event.target.dataset.set)
+
+    const jsonBody = { 
+      profileId:  localStorage.loggedInId,
+      profileName:localStorage.profileName,
+      actionProfileId:actionProfileData.profileId,
+      actionProfileName:actionProfileData.firstName,
+      action:"Interest"
+
   }
-  _loginAuthication() {
-   // const isValidate = this.$.loginForm.validate();
-   // console.log(this.$.loginForm.validate())
-    if (this.username) {
-      const jsonBody = {
-        userName: this.username,
-        password: this.password,
-      }
-      let ajaxRef = this.$.signInAjax;
-      ajaxRef.method = "get";
-      ajaxRef.url = `${this.baseUrl}/loginUser/${jsonBody.userName}/${jsonBody.password}`,
-      ajaxRef.body = jsonBody;
-      ajaxRef.contentType = "application/json"
-      ajaxRef.generateRequest();
-    }else{
-       //alertdialog,alertMsg
-       this.alertMsg ="Please Enter User Credetails"
-       this.$.alertdialog.open();
-
-    }
+    let ajaxRef = this.$.interestSendAjax;
+    ajaxRef.method = "put"
+    ajaxRef.body = jsonBody;
+    ajaxRef.url = `${this.baseUrl}/updateInterest`,
+    ajaxRef.contentType = "application/json"
+    ajaxRef.generateRequest();
   }
-
-
  
-
-  _signInHandler(event){
+  _interestSendHandler(event){
     const response = event.detail.response;
-    if(response.actionMessage== "success"){
-          // Store
-          const response = event.detail.response;
-          sessionStorage.setItem("userDetails", JSON.stringify());
-          localStorage.loggedInId= response.loginId;
-          window.history.pushState({}, null, '/payee');
-          window.dispatchEvent(new CustomEvent("location-changed"));
+    if(response){
+      alert("Congratulation! Your Interest has been successfully sent. ");
+      
     }else{
-      //alertdialog,alertMsg
-      this.alertMsg ="User is not existing"
-      this.$.alertdialog.open();
+      alert("Sorry, Your Interest could not happed");
+    }
+  }
 
+  _switchBetweenLoginAndCreate(event){//Savings,Payments,Mortgage
+    console.log('_switchBetweenLoginAndCreate', event.target.dataset.item$);
+    let type=event.target.dataset.item$
+   // this.showSelectedGroupProductlist=true;
+    //this.prodctGroupName=type;        
+    if(type=="profile"){
+          this._getProfile();
+          this.profileListFlag =true;
+          this.interestedFlag =false;
+          this.acceptedFlag =false;
+          this.rejectedFlag=false;
+          
+    }else if(type=="interested"){
+     this._getInterested()
+            this.interestedFlag =true;
+            this.acceptedFlag =false;
+            this.rejectedFlag=false;
+            this.profileListFlag =false;
+    }else if(type=="accepted"){
+      this._getAccepted();
+      this.acceptedFlag =true;
+      this.interestedFlag =false;
+     
+      this.rejectedFlag=false;
+      this.profileListFlag =false;
+    }else{
+      this._getRejected();
+      this.acceptedFlag =false;
+      this.interestedFlag =false;
+      this.profileListFlag=false;
+     
+      this.rejectedFlag=true;
+      this.profileListFlag =false;
+         
     }
     
-
   }
-  _signUpHandler(event){
-    const response = event.detail.response;
-    if(response.actionMessage=="success"){
-      this.createdAccountDetails =response;
-      this.$.createdAccountDetailsDialog.open();
-
+  //profileListFlag,_showProductDetail
+  _showProductDetail(event){
+    //alert('profileListFlag'+event.target.id);
+    let productId=event.target.id;
+    this._getProductDetails(productId);
+   
+  }
+  toggle() {
+    let collapse= this.$.collapseId;
+    collapseId.toggle();
+  }
+  _getText(opened) {
+    return opened ? 'Collapse' : 'Expand';
+  }
+  
+  _getProfile(){
+    let profileId =  localStorage.loggedInId;
+    let ajaxRef = this.$.profileAjax;
+    ajaxRef.method = "get"
+    ajaxRef.url = `${this.baseUrl}/getFilteredProfile/${profileId}`,
+    ajaxRef.contentType = "application/json"
+    ajaxRef.generateRequest();
+  }
+  _profileHandler(event){
+    let data=event.detail.response;
+    this.filteredProfiles = event.detail.response;
+    if(data){
+      this.profileListFlag =true;
+      this.interestedFlag =false;
+      this.acceptedFlag =false;
+      this.rejectedFlag=false;
+     
     }
+    
   }
-  _errorHandler(){
-    alert('error');
+  
+  _getAccepted(){
+    let profileId =  localStorage.loggedInId;
+    let ajaxRef = this.$.acceptedAjax;
+    ajaxRef.method = "get"
+    ajaxRef.url = `${this.baseUrl}/getAcceptedProfile/${profileId}`,
+    ajaxRef.contentType = "application/json"
+    ajaxRef.generateRequest();
+  }
+  _acceptedAjaxHanler(event){
+    let data=event.detail.response;
+    this.filteredAccepted = event.detail.response;
+    if(data){
+      this.acceptedFlag =true;
+      this.profileListFlag =false;
+      this.interestedFlag =false;
+      this.rejectedFlag=false;
+    }else{
+      alert("No Data");
+    }
+    
+  }
+ 
+_getInterested(){
+    let profileId =  localStorage.loggedInId;
+    let ajaxRef = this.$.interestedAjax;
+    ajaxRef.method = "get"
+    ajaxRef.url = `${this.baseUrl}/getInterestedProfile/${profileId}`,
+    ajaxRef.contentType = "application/json"
+    ajaxRef.generateRequest();
+  }
+  _interestedHanler(event){
+    let data=event.detail.response;
+     this.filteredInterested = event.detail.response;
+     if(data){
+      this.acceptedFlag =false;
+      this.profileListFlag =false;
+      this.interestedFlag =true;
+      this.rejectedFlag=false;
+    }else{
+      alert("No Data");
+    }
+    
   }
 
-  _resetForm() {
-    this.$.loginForm.reset();
+_getRejected(){
+    this.profileListFlag =false;
+    let profileId =  localStorage.loggedInId;
+    let ajaxRef = this.$.rejectedAjax;
+    ajaxRef.method = "get"
+    ajaxRef.url = `${this.baseUrl}/getRejectedProfile/${profileId}`,
+    ajaxRef.contentType = "application/json"
+    ajaxRef.generateRequest();
   }
-  _responseHandler(event) {
+  _rejectedHandler(event){
+    let data =event.detail.response;
+     this.filteredRejected = event.detail.response;
+     if(data){
+      this.rejectedFlag=true;
+      this.acceptedFlag =false;
+      this.profileListFlag =false;
+      this.interestedFlag =false;
+     
+    }else{
+      alert("No Data");
+    }
+     
+    
+  }
+  
+  _interestedHanlerH(event){
+    var global =this;
     const response = event.detail.response;
-  }
-
-  _handleError() {
-    alert('_handleError');
-  }
-
-  _submitCreateAccountForm() {
-  //  const isValidate = this.$.ceateAccountForm.validate();
-   // console.log(this.$.ceateAccountForm.validate())
+    this.allProductGroup= response;
+    let productGroupName= response;
+    this.prodctGroupName = "Mortgage";
    
-   //window.history.pushState({}, null, '/list');
-  // window.dispatchEvent(new CustomEvent("location-changed"));
-   
-   //{firstName,lastName,accountNumber,pancard,emailId,contactNumber}
-    if (true) {
-      const jsonBody = {
-        firstName: this.firstName,
-        lastName: this.lastName,
-        accountNumber: this.accountNumber,
-        pancard: this.pancard,
-        emailId:this.emailId,
-        contactNumber:this.contactNumber
+    //   productMorgageList,productPaymentList,productSavingList,products
+    productGroupName.filter(data =>{
+      console.log(data);
+      if(data.productGroup.productGroupName=="Mortgage"){
+        this.MortgageCount = this.MortgageCount+1;
+        global.push('productMorgageList',  {"productNameId":data.productNameId, "productName":data.productName});
+      }else if(data.productGroup.productGroupName=="Payments"){
+        this.PaymentCount = this.PaymentCount+1;
+        global.push('productPaymentList',  {"productNameId":data.productNameId, "productName":data.productName});
+      }else{
+        this.SavingsCount =this.SavingsCount+1;
+        global.push('productSavingList', {"productNameId":data.productNameId, "productName":data.productName});
       }
-      let ajaxRef = this.$.ajaxSinUp;
-      ajaxRef.method = 'post';
-      ajaxRef.url = `${this.baseUrl}/createAccount`,
-      ajaxRef.body = jsonBody;
-      ajaxRef.contentType = "application/json"
-      ajaxRef.generateRequest();
+    });
+    
+    
+  }//SavingsCount,MortgageCount, MortgageCount
+  filterCount(data) {
+    
+  }
+  
+  _rejectedHandler(event){
+    const response = event.detail.response;
+    if(response){
+      this.selectedProductDetails= response;
+      this.profileListFlag=true;
+      this.getAllProductCount();
+    }else{
+      alert("No Data Found");
+
     }
+         
+   
+  }
+  getAllProductCount(){
+    let productUniqId=productId;
+    let ajaxRef = this.$.getUpdate;
+    ajaxRef.method = "get"
+    ajaxRef.url = `${this.baseUrl}/updateProductGroupCount/${this.productUniqId}`,
+    ajaxRef.contentType = "application/json"
+    ajaxRef.generateRequest();
+
+  }
+  _getUpdateHandler(event){
+
   }
 
+  _errorHandler(){
+    console.log("Error");
+   // alert('error');
+  }
 
   
 
-  _postresponseHandler(event){
-    const response = event.detail.response;
-    if(response.status=="success"){
-      createdAccountDetailsDialog = response;
-    }
+  _handleError() {
+   // alert('_handleError');
   }
-
 
 }
 
 // Register the x-custom element with the browser
-customElements.define('login-element', LoginElement);
+customElements.define('dashboard-element', DashboardElement);

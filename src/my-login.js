@@ -56,10 +56,16 @@ class LoginElement extends PolymerElement {
     position: fixed;
     border: 6px solid beige;
   }
-  #createdAccountDetailsDialog{
+  #createdAccountDetailsDialogId{
     color:#ff6200!important;
     border: 6px solid beige;
 
+  }
+  .headerStyle{
+    background: #d9475c;
+    margin:1%;
+    padding:1%;
+    color:white;
   }
       </style>
 
@@ -79,7 +85,7 @@ class LoginElement extends PolymerElement {
   <div class="card-content" style="background-color:beige">
   <paper-tabs selected="0">
         <paper-tab id="login"  data-item$="login" on-click="_switchBetweenLoginAndCreate">Login</paper-tab>
-        <paper-tab id="create" data-item$="create" on-click="_switchBetweenLoginAndCreate">Create Account</paper-tab>
+        <paper-tab id="create" data-item$="create" on-click="_switchBetweenLoginAndCreate">Create Profile</paper-tab>
           
 </paper-tabs>
   </div>
@@ -87,12 +93,14 @@ class LoginElement extends PolymerElement {
   <!--SignIn  Form End-->
   <template is="dom-if" if="{{showLoginForm}}">
           <div class="card-actions"  style="margin:20px;border:5px solid beige; background-color:bisque">
-              <p>Login From</p>
+          <p class="headerStyle">
+          Login Member,
+        <small>Meet over 10 lakh profiles</small>
               <div class="horizontal justified">
             <iron-form id="loginForm">
               <form>
-                            <paper-input  value="{{username}}" always-float-label label="User" error-message="Enter First Name" auto-validate required></paper-input>
-                            <paper-input type="password" value="{{password}}" always-float-label label="Password" error-message="Enter First Name" auto-validate required></paper-input>
+                            <paper-input  value="{{loginName}}" always-float-label label="User" error-message="Enter First Name" auto-validate required></paper-input>
+                            <paper-input type="password" value="{{password}}" always-float-label label="password" error-message="Enter First Name" auto-validate required></paper-input>
                             <paper-button class="custom indigo customizedcss"  
                             on-click="_loginAuthication">Login</paper-button>
                             <paper-button toggles class="custom indigo customizedDangercss" class="green" on-click="_resetForm">Reset</paper-button>
@@ -107,21 +115,51 @@ class LoginElement extends PolymerElement {
     <!--Account Creation Form start-->
     <template is="dom-if" if="{{showSignUpForm}}">
     <div class="card-actions"  style="margin:20px;border:5px solid beige; background-color:bisque">
-            <p>Creeate New Account From</p>
+            <p class="headerStyle">
+            REGISTER FREE
+          <small>Meet over 10 lakh profiles</small>
+            
+            </p>
             <div class="horizontal justified">
           <iron-form id="ceateAccountForm">
             <form>
-                              <paper-input  value="{{firstName}}" always-float-label label="FirstName" error-message="Enter First Name" auto-validate required></paper-input>
-                              <paper-input  value="{{lastName}}" always-float-label label="LastName" error-message="Enter First Name" auto-validate required></paper-input>
-                              <paper-input type="number" value="{{accountNumber}}" always-float-label label="AccountNumber" error-message="Enter First Name" auto-validate required></paper-input>
+            <!--{
+              "age": 0,
+              "caste": "string",
+              "dob": "2019-06-07T07:28:18.631Z",---
+              "emailId": "string",
+              "firstName": "string",
+              "gender": "string",---
+              "lastName": "string",
+              "mobile": 0,
+              "openToMany": "string",---
+              "religionPreference": "string",
+              "salary": 0
+             }-->
+                              <paper-input type="number" value="{{age}}" always-float-label label="Age" error-message="Enter First Name" auto-validate required></paper-input>
+                              <paper-input  value="{{caste}}" always-float-label label="Caste" error-message="Enter Caste Name" auto-validate required></paper-input>
+                              <paper-input type="date" value="{{dob}}" always-float-label label="AccountNumber" error-message="Enter First Name" auto-validate required></paper-input>
                             
-                              <paper-input type="email" value="{{emailId}}" always-float-label label="EmailId" error-message="Enter First Name" auto-validate required></paper-input>
-                              <paper-input  value="{{pancard}}" always-float-label label="Pancard" error-message="Enter First Name" auto-validate required></paper-input>
+                              <paper-input type="emailId" value="{{emailId}}" always-float-label label="EmailId" error-message="Enter Email" auto-validate required></paper-input>
+                            
+                              <paper-input  value="{{firstName}}" always-float-label label="FirstName" error-message="Enter First Name" auto-validate required></paper-input>
+                            
+                              <paper-input  value="{{lastName}}" always-float-label label="LastName" error-message="Enter LastName " auto-validate required></paper-input>
+                              <paper-input type="number" value="{{mobile}}" always-float-label label="Contact Number" error-message="Enter First Name" auto-validate required></paper-input>
+                              <!--
+                              <paper-input value="{{openToMany}}" always-float-label label="OpenToMany" error-message="Enter" auto-validate required></paper-input>
+                             
+                             
+                            
                               <paper-input  type="number" value="{{contactNumber}}" always-float-label label="ContactNumber" error-message="Enter First Name" auto-validate required></paper-input>
+                             
+                             --> <paper-input   value="{{religionPreference}}" always-float-label label="ReligionPreference" error-message="Enter First Name" auto-validate required></paper-input>
                               
-
+                              
+                              <paper-input   value="{{salary}}" always-float-label label="salary" error-message="Salary" auto-validate required></paper-input>
+                             
                           <paper-button class="custom indigo customizedcss"  
-                          on-click="_submitCreateAccountForm">Create Account</paper-button>
+                          on-click="_submitCreateAccountForm">Create Profile</paper-button>
                   
                           <paper-button toggles class="custom indigo customizedDangercss" class="green" on-click="_resetForm">Reset</paper-button>
               </form>
@@ -152,15 +190,25 @@ class LoginElement extends PolymerElement {
             <h2>[[alertMsg]]</h2>
             <paper-button class="custom indigo customizedDangercss" style="float:right" dialog-confirm autofocus>OK</paper-button>
   </paper-dialog>
-
+  
   <!--Details  Dialog Start-->
-<paper-dialog id="createdAccountDetailsDialog">
-                <div><h2 style="color:rgba(255, 98, 0, 0.66);">Created Account Details:</h2></div>
-                <div>AccountId<span>: [[createdAccountDetails.account.accountId]]</span></div>
-                <div>LoggedIn User Id<span>: [[createdAccountDetails.loginId]]</span></div>
-                <div>Password has been sent to your registered email id. Please Check</span></div>
+  <!--{profileId, firstName,lastName,age,gender,salary,caste,religionPreference,openToMany,mobile,emailId,dob}-->
+<paper-dialog id="createdAccountDetailsDialogId">
+                <div><h2 style="color:rgba(255, 98, 0, 0.66);">Created Profile Details:</h2></div>
+                <div>ProfileId<span>: [[createdAccountDetails.loginId]]</span></div>
+                <div>FirstName<span>: [[createdAccountDetails.loginName]]</span></div>
+                <div>LastName<span>: [[createdAccountDetails.password]]</span></div>
+               <!-- <div>Age<span>: [[createdAccountDetails.age]]</span></div>
+                <div>Salary<span>: [[createdAccountDetails.salary]]</span></div>
+                <div>Caste<span>: [[createdAccountDetails.caste]]</span></div>
+                <div>ReligionPreference<span>: [[createdAccountDetails.religionPreference]]</span></div>
+                <div>Contact Number<span>: [[createdAccountDetails.mobile]]</span></div>
+                <div>EmailId<span>: [[createdAccountDetails.emailId]]</span></div>
+                <div>Contact Number<span>: [[createdAccountDetails.mobile]]</span></div>
+                <div>Date Of Birth<span>: [[createdAccountDetails.dob]]</span></div>-->
             <div class="buttons">
                   <paper-button dialog-dismiss>OK</paper-button>
+                 
                 <!-- <paper-button dialog-confirm autofocus>Accept</paper-button>-->
                 </div>
 </paper-dialog>
@@ -187,7 +235,7 @@ class LoginElement extends PolymerElement {
       baseUrl:
       {
         type: String,
-        value: "http://192.168.43.22:8090/app"
+        value: "http://10.117.189.210:8090/app"
       },
       subUrl:
       {
@@ -206,7 +254,7 @@ class LoginElement extends PolymerElement {
         type:Boolean,
         value:false
       },
-      createdAccountDetailsDialog:{
+      createdAccountDetails:{
         type:Object, 
         value:{}
       }
@@ -238,16 +286,17 @@ class LoginElement extends PolymerElement {
     }
   }
   _loginAuthication() {
+   
    // const isValidate = this.$.loginForm.validate();
    // console.log(this.$.loginForm.validate())
-    if (this.username) {
+    if (this.loginName) {
       const jsonBody = {
-        userName: this.username,
+        loginName: this.loginName,
         password: this.password,
-      }
+      }//{loginName,password}
       let ajaxRef = this.$.signInAjax;
-      ajaxRef.method = "get";
-      ajaxRef.url = `${this.baseUrl}/loginUser/${jsonBody.userName}/${jsonBody.password}`,
+      ajaxRef.method = "post";
+      ajaxRef.url = `${this.baseUrl}/login`,
       ajaxRef.body = jsonBody;
       ajaxRef.contentType = "application/json"
       ajaxRef.generateRequest();
@@ -259,17 +308,17 @@ class LoginElement extends PolymerElement {
     }
   }
 
-
- 
-
   _signInHandler(event){
     const response = event.detail.response;
     if(response.actionMessage== "success"){
           // Store
           const response = event.detail.response;
-          sessionStorage.setItem("userDetails", JSON.stringify());
-          localStorage.loggedInId= response.loginId;
-          window.history.pushState({}, null, '/payee');
+          sessionStorage.setItem("userDetails", JSON.stringify(response));
+          localStorage.loggedInId= response.profile.profileId;
+          localStorage.profileName =response.profile.firstName;
+          alert(localStorage.loggedInId);
+          console.log( localStorage.loggedInId);
+          window.history.pushState({}, null, '/dashboard');
           window.dispatchEvent(new CustomEvent("location-changed"));
     }else{
       //alertdialog,alertMsg
@@ -282,14 +331,20 @@ class LoginElement extends PolymerElement {
   }
   _signUpHandler(event){
     const response = event.detail.response;
-    if(response.actionMessage=="success"){
-      this.createdAccountDetails =response;
-      this.$.createdAccountDetailsDialog.open();
+    if(response){
+     // createdAccountDetailsDialogId, createdAccountDetails
+      this.createdAccountDetails = response;
+      this.$.createdAccountDetailsDialogId.open();
+    }else{
+      //alertdialog,alertMsg
+      this.alertMsg ="Failed To Create Profile"
+      this.$.alertdialog.open();
 
     }
   }
   _errorHandler(){
-    alert('error');
+    this.alertMsg ="Error, Check Server"
+    this.$.alertdialog.open();
   }
 
   _resetForm() {
@@ -309,35 +364,48 @@ class LoginElement extends PolymerElement {
    
    //window.history.pushState({}, null, '/list');
   // window.dispatchEvent(new CustomEvent("location-changed"));
-   
+   /*
+  "age": 0,
+  "caste": "string",
+  "dob": "2019-06-07T07:28:18.631Z",
+  "emailId": "string",
+  "firstName": "string",
+  "gender": "string",
+  "lastName": "string",
+  "mobile": 0,
+  "openToMany": "string",
+  "religionPreference": "string",
+  "salary": 0
+
+   */
    //{firstName,lastName,accountNumber,pancard,emailId,contactNumber}
     if (true) {
       const jsonBody = {
-        firstName: this.firstName,
-        lastName: this.lastName,
-        accountNumber: this.accountNumber,
-        pancard: this.pancard,
-        emailId:this.emailId,
-        contactNumber:this.contactNumber
+        ageDto: this.age,
+        casteDto: this.caste,
+        dobDto: this.dob,
+        emailIdDto: this.emailId,
+        firstNameDto:this.firstName,
+        genderDto:this.gender,
+        mobileDto: this.mobile,
+        openToManyDto:"yes",//this.openToMany,
+        genderDto:"male",
+        religionPreferenceDto: this.religionPreference,
+       // openToMany:this.openToMany,
+        salaryDto:this.salary,
+        lastNameDto:this.lastName
       }
+      console.log(jsonBody);
       let ajaxRef = this.$.ajaxSinUp;
       ajaxRef.method = 'post';
-      ajaxRef.url = `${this.baseUrl}/createAccount`,
+      ajaxRef.url = `${this.baseUrl}/createProfile`,
       ajaxRef.body = jsonBody;
       ajaxRef.contentType = "application/json"
       ajaxRef.generateRequest();
     }
   }
 
-
   
-
-  _postresponseHandler(event){
-    const response = event.detail.response;
-    if(response.status=="success"){
-      createdAccountDetailsDialog = response;
-    }
-  }
 
 
 }

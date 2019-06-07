@@ -43,7 +43,7 @@ class MyApp extends PolymerElement {
     return html`
       <style>
         :host {
-          --app-primary-color: #ff6200!important;
+          --app-primary-color: #d9475c!important;
           --app-secondary-color: #1f1f1f;
           --app-paper-dialog-border: 1px solid red;
           --app-header-layout-bg: #f1f1f1!important;
@@ -86,7 +86,7 @@ class MyApp extends PolymerElement {
         .drawer-list a.iron-selected {
           
           color:white;
-          background-color: #ff6200!important;
+          background-color: #d9475c!important;
         }
         .drawer-list a:hover {
           
@@ -109,12 +109,14 @@ class MyApp extends PolymerElement {
       <app-drawer-layout fullbleed="" narrow="{{narrow}}" style="background-color:#f1f1f1!important">
         <!-- Drawer content -->
         <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]" style="background-color:red">
-          <app-toolbar><img src="/images/ing-logo-vector.png"  height="200%"></app-toolbar>
+          <app-toolbar></app-toolbar>
           <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
                    
                     
                     <a name="dashboard" href="[[rootPath]]dashboard"></a>
-                    <a name="main" href="[[rootPath]]main">DashBoard</a>
+                   
+                    <a name="report" href="[[rootPath]]report"></a>
+                    <a name="login" href="[[rootPath]]login"></a><!--Login-->
 
                     
         </iron-selector>
@@ -125,9 +127,14 @@ class MyApp extends PolymerElement {
                     <app-header slot="header" condenses="" reveals="" effects="waterfall">
                       <app-toolbar>
                         <paper-icon-button icon="my-icons:menu" drawer-toggle=""></paper-icon-button>
-                        <div main-title="" style="color:white">M Application</div>
+                        <div main-title="" style="color:white">
+                        Love is looking for you.
+                              Be found on Jeevansathi.
+                        
+                        </div>
+                        <!--
                         <paper-dropdown-menu label="English" style="color:#fff">
-                        <!--<paper-listbox slot="dropdown-content" class="dropdown-content">
+                        <paper-listbox slot="dropdown-content" class="dropdown-content">
                         <paper-item   name="assosor"><span>French</span></paper-item>
                         <paper-item   name="assosor"><span>Spanish</span></paper-item>-->
                      
@@ -142,11 +149,9 @@ class MyApp extends PolymerElement {
                    
                     
                     <iron-pages selected="[[page]]" attr-for-selected="name" role="main"  >
-                            
-                            <dashboard-element  name="dashboard"></login-dashboard>
-                            <login-element name="createlogin"></login-element>
-                            <my-chart name="report"></my-chart>
-                            <'main-element name="main"></main-element>
+                            <dashboard-element  name="dashboard"></dashboard-element>
+                            <login-element name="login"></login-element>
+                            <test-element name="test"></test-element>
                             <page-not-found name="pagenotfound"></page-not-found>
                     </iron-pages>
         </app-header-layout>
@@ -161,19 +166,19 @@ class MyApp extends PolymerElement {
   connectedCallback() {
     super.connectedCallback();
     sessionStorage.isSubmitOrder = false;
-    this.isAdmin= sessionStorage.getItem("isAdmin");
+    this.isAdmin = sessionStorage.getItem("isAdmin");
     // var data = [{
     //   values: [19, 26, 55],
     //   labels: ['Residential', 'Non-Residential', 'Utility'],
     //   type: 'pie'
     // }];
-    
+
     // Plotly.newPlot('myDiv', data, {}, {showSendToCloud:true});
-    
+
     //Plotly.newPlot('pieContainer', data, {}, {showSendToCloud:true});
   }
 
-  
+
   _handleError() {
     alert('Error is Web Service');
   }
@@ -184,7 +189,7 @@ class MyApp extends PolymerElement {
     this.accountType = e.target.name;
 
   }
- 
+
   _pagenavigation() {
     window.history.pushState({}, null, '/routename');
     window.dispatchEvent(new CustomEvent("location-changed"));
@@ -231,14 +236,14 @@ class MyApp extends PolymerElement {
   }
 
   _routePageChanged(page) {
-    // alert(page);
+    console.log(page);
     // Show the corresponding page according to the route.
     //
     // If no page was found in the route data, page will be an empty string.
     // Show 'view1' in that case. And if the page doesn't exist, show 'view404'.
     if (!page) {
-      this.page = 'createlogin';
-    } else if (['dashboard','report', 'createlogin', "main"].indexOf(page) !== -1) {
+      this.page = 'test';
+    } else if (['dashboard', 'report', 'login', 'test'].indexOf(page) !== -1) {
       this.page = page;
     } else {
       //this.page = 'pagenotfound';
@@ -255,20 +260,21 @@ class MyApp extends PolymerElement {
     //
     // Note: `polymer build` doesn't like string concatenation in the import
     // statement, so break it up.
+    console.log(page)
     switch (page) {
-
-      case 'main':
-        import('./my-main.js');
+      case 'dashboard':
+        import('./my-dashboard.js');
         break;
-        case 'dashboard':
-          import('./my-login.js');
-          break;
-          case 'createlogin':
-            import('./my-login.js');
-            break;
+      case 'test':
+        import('./test-element.js');
+        break;
+      case 'login':
+        import('./my-login.js');
+        break;
       case 'pagenotfound':
         import('./my-pagenotfound.js');
         break;
+
     }
   }
 }
