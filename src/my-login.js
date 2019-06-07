@@ -359,26 +359,6 @@ class LoginElement extends PolymerElement {
   }
 
   _submitCreateAccountForm() {
-  //  const isValidate = this.$.ceateAccountForm.validate();
-   // console.log(this.$.ceateAccountForm.validate())
-   
-   //window.history.pushState({}, null, '/list');
-  // window.dispatchEvent(new CustomEvent("location-changed"));
-   /*
-  "age": 0,
-  "caste": "string",
-  "dob": "2019-06-07T07:28:18.631Z",
-  "emailId": "string",
-  "firstName": "string",
-  "gender": "string",
-  "lastName": "string",
-  "mobile": 0,
-  "openToMany": "string",
-  "religionPreference": "string",
-  "salary": 0
-
-   */
-   //{firstName,lastName,accountNumber,pancard,emailId,contactNumber}
     if (true) {
       const jsonBody = {
         ageDto: this.age,

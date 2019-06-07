@@ -269,11 +269,9 @@ class DashboardElement extends PolymerElement {
       <div class="card-actions"  style="margin:20px;border:1px solid gray; background-color:ivory;padding:1%">
               <p>Rejected:</p>
               <vaadin-grid theme="row-dividers" column-reordering-allowed multi-sort items={{filteredRejected}}>
-                      <vaadin-grid-column width="9em" path="firstName"></vaadin-grid-column>
-                      <vaadin-grid-column width="9em" path="lastName"></vaadin-grid-column>
-                      <vaadin-grid-column width="9em" path="emailId"></vaadin-grid-column>
-                      <vaadin-grid-column width="9em" path="salary"></vaadin-grid-column>
-                      <vaadin-grid-column width="9em" path="caste"></vaadin-grid-column>
+                      <vaadin-grid-column width="9em" path="rejectedProfileName"></vaadin-grid-column>
+                      <vaadin-grid-column width="9em" path="profileId"></vaadin-grid-column>
+                      
             </vaadin-grid>
           
         </div>
@@ -398,6 +396,11 @@ class DashboardElement extends PolymerElement {
       filteredInterested:{
         type:Array,
         value:[]
+      },
+      filteredRejected:{
+        type:Array,
+        value:[]
+
       }
      
      //////profileListFlag,interestedFlag,acceptedFlag,rejectedFlag 
@@ -471,31 +474,21 @@ class DashboardElement extends PolymerElement {
       this.rejectedFlag=false;
       this.profileListFlag =false;
     }else{
+    //  alert("Comming Soon..");
+      
       this._getRejected();
       this.acceptedFlag =false;
       this.interestedFlag =false;
       this.profileListFlag=false;
      
       this.rejectedFlag=true;
-      this.profileListFlag =false;
+      
          
     }
     
   }
-  //profileListFlag,_showProductDetail
-  _showProductDetail(event){
-    //alert('profileListFlag'+event.target.id);
-    let productId=event.target.id;
-    this._getProductDetails(productId);
-   
-  }
-  toggle() {
-    let collapse= this.$.collapseId;
-    collapseId.toggle();
-  }
-  _getText(opened) {
-    return opened ? 'Collapse' : 'Expand';
-  }
+  
+  
   
   _getProfile(){
     let profileId =  localStorage.loggedInId;
@@ -587,59 +580,10 @@ _getRejected(){
     
   }
   
-  _interestedHanlerH(event){
-    var global =this;
-    const response = event.detail.response;
-    this.allProductGroup= response;
-    let productGroupName= response;
-    this.prodctGroupName = "Mortgage";
-   
-    //   productMorgageList,productPaymentList,productSavingList,products
-    productGroupName.filter(data =>{
-      console.log(data);
-      if(data.productGroup.productGroupName=="Mortgage"){
-        this.MortgageCount = this.MortgageCount+1;
-        global.push('productMorgageList',  {"productNameId":data.productNameId, "productName":data.productName});
-      }else if(data.productGroup.productGroupName=="Payments"){
-        this.PaymentCount = this.PaymentCount+1;
-        global.push('productPaymentList',  {"productNameId":data.productNameId, "productName":data.productName});
-      }else{
-        this.SavingsCount =this.SavingsCount+1;
-        global.push('productSavingList', {"productNameId":data.productNameId, "productName":data.productName});
-      }
-    });
-    
-    
-  }//SavingsCount,MortgageCount, MortgageCount
-  filterCount(data) {
-    
-  }
   
-  _rejectedHandler(event){
-    const response = event.detail.response;
-    if(response){
-      this.selectedProductDetails= response;
-      this.profileListFlag=true;
-      this.getAllProductCount();
-    }else{
-      alert("No Data Found");
-
-    }
-         
-   
-  }
-  getAllProductCount(){
-    let productUniqId=productId;
-    let ajaxRef = this.$.getUpdate;
-    ajaxRef.method = "get"
-    ajaxRef.url = `${this.baseUrl}/updateProductGroupCount/${this.productUniqId}`,
-    ajaxRef.contentType = "application/json"
-    ajaxRef.generateRequest();
-
-  }
-  _getUpdateHandler(event){
-
-  }
+    
+  
+  
 
   _errorHandler(){
     console.log("Error");
