@@ -83,6 +83,7 @@ public class MatrimonyServiceImplTest {
 		profile.setProfileId(111);
 		profile.setReligionPreference(ProfileDto.getReligionPreferenceDto());
 		profile.setSalary(ProfileDto.getSalaryDto());
+		lst.add(profile);
 
 		login.setPassword(ProfileDto.getFirstNameDto());
 		login.setLoginName(ProfileDto.getFirstNameDto().substring(0, 3) + ProfileDto.getLastNameDto().substring(0, 3));
@@ -135,6 +136,14 @@ public class MatrimonyServiceImplTest {
 		Mockito.when(loginRepository.findByLoginNameAndPassword("RohKum", "Rohit")).thenReturn(login);
 		Login actval3 = matrimonyServiceImpl.validateLogin(loginDto);
 		Assert.assertEquals("RohKum", actval3.getLoginName());
+	}
+
+	@Test
+	public void testGetFilteredProfile() {
+		Mockito.when(profileRepository.findByProfileId(profile.getProfileId())).thenReturn(profile);
+		Mockito.when(profileRepository.findByGenderNotLike(profile.getGender())).thenReturn(lst);
+		List<Profile> actval4 = matrimonyServiceImpl.getFilteredProfile(profile.getProfileId());
+		Assert.assertEquals(lst.size(), actval4.size());
 	}
 
 }

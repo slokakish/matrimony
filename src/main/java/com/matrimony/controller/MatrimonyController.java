@@ -64,7 +64,7 @@ public class MatrimonyController {
         
     }
     
-    @GetMapping("/getRejectedProfile{profileId}")
+    @GetMapping("/getRejectedProfile/{profileId}")
     public List<Dashboard> getRejectedProfile(@PathVariable Integer profileId){
         return matrimonyService.getRejectedProfiles(profileId);
     }
