@@ -3,6 +3,7 @@ package com.matrimony.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.matrimony.dto.LoginDto;
 import com.matrimony.entity.Login;
 import com.matrimony.entity.Profile;
 import com.matrimony.repository.LoginRepository;
@@ -32,17 +33,17 @@ public class MatrimonyServiceImpl implements MatrimonyService {
 	}
 
 	@Override
-	public Login validateLogin(String loginName, String password) {
+	public Login validateLogin(LoginDto loginDto) {
 		Login login = new Login();
 
-		login = loginRepository.findByLoginNameAndPassword(loginName, password);
+		login = loginRepository.findByLoginNameAndPassword(loginDto.getLoginName(), loginDto.getPassword());
 		if (login != null) {
 			login.setActionMessage("success");
 			return login;
 		} else {
 			Login login1 = new Login();
-			login1.setLoginName(loginName);
-			login1.setActionMessage(loginName + "is not a valid user");
+			login1.setLoginName(loginDto.getLoginName());
+			login1.setActionMessage(loginDto.getLoginName() + "is not a valid user");
 			return login1;
 		}
 	}

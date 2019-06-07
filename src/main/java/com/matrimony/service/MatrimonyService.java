@@ -1,9 +1,8 @@
 package com.matrimony.service;
 
-import java.util.Date;
-
 import org.springframework.stereotype.Service;
 
+import com.matrimony.dto.LoginDto;
 import com.matrimony.entity.Login;
 import com.matrimony.entity.Profile;
 
@@ -13,6 +12,6 @@ public interface MatrimonyService {
 	Login createProfile(Profile profile);
 
 
-	Login validateLogin(String userName, String password);
+	Login validateLogin(LoginDto loginDto);
 
 }
