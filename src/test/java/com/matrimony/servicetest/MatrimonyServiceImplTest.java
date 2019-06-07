@@ -11,10 +11,15 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.matrimony.dto.DashboardDto;
+import com.matrimony.dto.LoginDto;
+import com.matrimony.dto.ProfileDto;
 import com.matrimony.entity.Dashboard;
 import com.matrimony.entity.Login;
+import com.matrimony.entity.Profile;
 import com.matrimony.repository.DashboardRepository;
 import com.matrimony.repository.LoginRepository;
+import com.matrimony.repository.ProfileRepository;
 import com.matrimony.service.MatrimonyServiceImpl;
 
 import junit.framework.Assert;
@@ -31,8 +36,19 @@ public class MatrimonyServiceImplTest {
 	@Mock
 	DashboardRepository dashboardRepository;
 
+	@Mock
+	ProfileRepository profileRepository;
+
 	static Dashboard dashboard = new Dashboard();
 	static List<Dashboard> expectval = new ArrayList<Dashboard>();
+
+	static ProfileDto ProfileDto = new ProfileDto();
+	static Profile profile = new Profile();
+	static Login login = new Login();
+	static LoginDto loginDto = new LoginDto();
+
+	static DashboardDto dashboardDto = new DashboardDto();
+	static List<Profile> lst = new ArrayList<Profile>();
 
 	@BeforeClass
 	public static void setUp() {
@@ -46,6 +62,41 @@ public class MatrimonyServiceImplTest {
 		dashboard.setRejectedProfileId(4);
 		dashboard.setRejectedProfileName("tyu");
 		expectval.add(dashboard);
+
+		ProfileDto.setAgeDto(12);
+		ProfileDto.setCasteDto("asd");
+		ProfileDto.setEmailIdDto("rohit@gmail");
+		ProfileDto.setFirstNameDto("Rohit");
+		ProfileDto.setGenderDto("M");
+		ProfileDto.setLastNameDto("Kumar");
+		ProfileDto.setMobileDto(122434L);
+		ProfileDto.setReligionPreferenceDto("Hindu");
+		ProfileDto.setSalaryDto(12340);
+
+		profile.setAge(ProfileDto.getAgeDto());
+		profile.setCaste(ProfileDto.getCasteDto());
+		profile.setEmailId(ProfileDto.getEmailIdDto());
+		profile.setFirstName(ProfileDto.getFirstNameDto());
+		profile.setGender(ProfileDto.getGenderDto());
+		profile.setLastName(ProfileDto.getLastNameDto());
+		profile.setMobile(ProfileDto.getMobileDto());
+		profile.setProfileId(111);
+		profile.setReligionPreference(ProfileDto.getReligionPreferenceDto());
+		profile.setSalary(ProfileDto.getSalaryDto());
+
+		login.setPassword(ProfileDto.getFirstNameDto());
+		login.setLoginName(ProfileDto.getFirstNameDto().substring(0, 3) + ProfileDto.getLastNameDto().substring(0, 3));
+		login.setActionMessage("success");
+
+		loginDto.setLoginName("RohKum");
+		loginDto.setPassword("Rohit");
+
+		dashboardDto.setProfileId(12);
+		dashboardDto.setProfileName("Rohit");
+		dashboardDto.setActionProfileId(31);
+		dashboardDto.setActionProfileName("Ravi");
+		dashboardDto.setAction("Sucess added");
+
 	}
 
 	@Test
@@ -71,4 +122,19 @@ public class MatrimonyServiceImplTest {
 		List<Dashboard> actval = matrimonyServiceImpl.getRejectedProfiles(dashboard.getInterestedProfileId());
 		Assert.assertEquals(expectval.size(), actval.size());
 	}
+
+	@Test
+	public void testCreateProfile() {
+		Login actval = matrimonyServiceImpl.createProfile(ProfileDto);
+		Assert.assertEquals("RohKum", actval.getLoginName());
+
+	}
+
+	@Test
+	public void testValidateLogin() {
+		Mockito.when(loginRepository.findByLoginNameAndPassword("RohKum", "Rohit")).thenReturn(login);
+		Login actval3 = matrimonyServiceImpl.validateLogin(loginDto);
+		Assert.assertEquals("RohKum", actval3.getLoginName());
+	}
+
 }

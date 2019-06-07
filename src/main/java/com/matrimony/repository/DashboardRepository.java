@@ -20,4 +20,9 @@ public interface DashboardRepository extends JpaRepository<Dashboard, Long> {
 
 	@Query(value = "select * from dashboard where profile_id = ?1 and rejected_profile_id is not null", nativeQuery = true)
 	List<Dashboard> getAllRejectedProfiles(int profileId);
+
+	Dashboard findByProfileIdAndInterestedProfileId(Integer profileId, Integer interestedProfileId);
+
+	@Query(value = "select * from dashboard d where d.profile_id = :profId", nativeQuery = true)
+	Dashboard findByProfileDashId(Integer profId);
 }

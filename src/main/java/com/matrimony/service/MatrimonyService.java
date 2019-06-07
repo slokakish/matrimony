@@ -18,8 +18,6 @@ public interface MatrimonyService {
 
 	Login validateLogin(LoginDto loginDto);
 
-	Profile getFilteredProfile(Integer profileId);
-
 	Dashboard updateAcceptReject(DashboardDto profileDto);
 
 	List<Dashboard> getInterestedProfiles(Integer profileId);
@@ -28,4 +26,7 @@ public interface MatrimonyService {
 
 	List<Dashboard> getRejectedProfiles(Integer profileId);
 
+	Dashboard updateInterest(DashboardDto profileDto);
+
+	public List<Profile> getFilteredProfile(Integer profileId);
 }

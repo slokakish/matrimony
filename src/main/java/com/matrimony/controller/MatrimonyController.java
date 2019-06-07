@@ -1,5 +1,6 @@
 package com.matrimony.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,26 +36,21 @@ public class MatrimonyController {
 		return new ResponseEntity<Login>(profileData, HttpStatus.OK);
 	}
 
-	@PostMapping("/loginUser")
+	@PostMapping("/login")
 	public ResponseEntity<Login> validateLogin(@RequestBody LoginDto loginDto) {
 		Login login = matrimonyService.validateLogin(loginDto);
 		return new ResponseEntity<Login>(login, HttpStatus.OK);
 	}
 
 	@GetMapping("/getFilteredProfile/{profileId}")
-	public ResponseEntity<Profile> getFilteredProfile(@RequestBody Integer profileId) {
-		// Login profileData = matrimonyService.getFilteredProfile(profile);
-		Profile profileData = matrimonyService.getFilteredProfile(profileId);
+    public ResponseEntity<List<Profile>> getFilteredProfile(@PathVariable Integer profileId) {
 
-		return new ResponseEntity<Profile>(profileData, HttpStatus.OK);
-	}
+        List<Profile> profileData = new ArrayList<Profile>();
+        profileData = matrimonyService.getFilteredProfile(profileId);
 
-	@PutMapping("/updateAcceptReject")
-    public ResponseEntity<Dashboard> updateAcceptReject(@RequestBody DashboardDto dashboardDto) {
-		Dashboard dashboard = matrimonyService.updateAcceptReject(dashboardDto);
-        return new ResponseEntity<Dashboard>(dashboard, HttpStatus.OK);
+        return new ResponseEntity<List<Profile>>(profileData, HttpStatus.OK);
     }
-	
+
 	@GetMapping("/getInterestedProfile/{profileId}")
     public List<Dashboard> getInterestedProfile(@PathVariable Integer profileId){
         return matrimonyService.getInterestedProfiles(profileId);
@@ -71,4 +67,16 @@ public class MatrimonyController {
     public List<Dashboard> getRejectedProfile(@PathVariable Integer profileId){
         return matrimonyService.getRejectedProfiles(profileId);
     }
+    
+    @PutMapping("/updateInterest")
+    public ResponseEntity<Dashboard> updateInterest(@RequestBody DashboardDto dashboardDto) {
+		Dashboard dashboard = matrimonyService.updateAcceptReject(dashboardDto);
+        return new ResponseEntity<Dashboard>(dashboard, HttpStatus.OK);
+    }
+    @PutMapping("/updateAcceptReject")
+    public ResponseEntity<Dashboard> updateAcceptReject(@RequestBody DashboardDto profileDto) {
+        Dashboard dashboard = matrimonyService.updateAcceptReject(profileDto);
+        return new ResponseEntity<Dashboard>(dashboard, HttpStatus.OK);
+    }
+    
 }
