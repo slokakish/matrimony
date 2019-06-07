@@ -10,8 +10,10 @@ import com.matrimony.dto.DashboardDto;
 import com.matrimony.dto.LoginDto;
 import com.matrimony.dto.ProfileDto;
 import com.matrimony.entity.Dashboard;
+import com.matrimony.entity.DashboardInterest;
 import com.matrimony.entity.Login;
 import com.matrimony.entity.Profile;
+import com.matrimony.repository.DashboardInterestRepository;
 import com.matrimony.repository.DashboardRepository;
 import com.matrimony.repository.LoginRepository;
 import com.matrimony.repository.ProfileRepository;
@@ -26,6 +28,9 @@ public class MatrimonyServiceImpl implements MatrimonyService {
 
 	@Autowired
 	private DashboardRepository dashboardRepository;
+
+	@Autowired
+	private DashboardInterestRepository dashboardInterestRepo;
 
 	public Login createProfile(ProfileDto profileDto) {
 
@@ -92,32 +97,22 @@ public class MatrimonyServiceImpl implements MatrimonyService {
 		Integer profileId = profileDto.getProfileId();
 		Dashboard actionProfile = dashboardRepository.findByProfileIdAndInterestedProfileId(actionProfileID, profileId);
 		if (actionProfile != null) {
-			if (profileDto.getAction().equalsIgnoreCase("Accept")) {
-				actionProfile.setAcceptedProfileID(profileDto.getProfileId());
-				actionProfile.setAcceptedProfileName(profileDto.getProfileName());
-			} else if (profileDto.getAction().equalsIgnoreCase("Reject")) {
-				actionProfile.setRejectedProfileId(profileDto.getProfileId());
-				actionProfile.setRejectedProfileName(profileDto.getProfileName());
-			} else if (profileDto.getAction().equalsIgnoreCase("Interest")) {
-				actionProfile.setInterestedProfileId(profileDto.getProfileId());
-				actionProfile.setInterestedProfileName(profileDto.getProfileName());
-			}
-			newOrUpdated = dashboardRepository.save(actionProfile);
-		} else {
-			Dashboard newProfile = new Dashboard();
-			newProfile.setProfileId(profileDto.getActionProfileId());
-			newProfile.setProfileName(profileDto.getActionProfileName());
-			if (profileDto.getAction().equalsIgnoreCase("Accept")) {
-				newProfile.setAcceptedProfileID(profileDto.getProfileId());
-				newProfile.setAcceptedProfileName(profileDto.getProfileName());
-			} else if (profileDto.getAction().equalsIgnoreCase("Reject")) {
-				newProfile.setRejectedProfileId(profileDto.getProfileId());
-				newProfile.setRejectedProfileName(profileDto.getProfileName());
-			} else if (profileDto.getAction().equalsIgnoreCase("Interest")) {
-				newProfile.setInterestedProfileId(profileDto.getProfileId());
-				newProfile.setInterestedProfileName(profileDto.getProfileName());
-			}
-			newOrUpdated = dashboardRepository.save(newProfile);
+		if (profileDto.getAction().equalsIgnoreCase("Accept")) {
+		actionProfile.setAcceptedProfileID(profileDto.getProfileId());
+		actionProfile.setAcceptedProfileName(profileDto.getProfileName());
+		actionProfile.setInterestedProfileId(null);
+		actionProfile.setInterestedProfileName(null);
+		actionProfile.setRejectedProfileId(null);
+		actionProfile.setRejectedProfileName(null);
+		} else if (profileDto.getAction().equalsIgnoreCase("Reject")) {
+		actionProfile.setRejectedProfileId(profileDto.getProfileId());
+		actionProfile.setRejectedProfileName(profileDto.getProfileName());
+		actionProfile.setInterestedProfileId(null);
+		actionProfile.setInterestedProfileName(null);
+		actionProfile.setAcceptedProfileID(null);
+		actionProfile.setAcceptedProfileName(null);
+		} 
+		newOrUpdated = dashboardRepository.save(actionProfile);
 		}
 		return newOrUpdated;
 	}
@@ -127,45 +122,20 @@ public class MatrimonyServiceImpl implements MatrimonyService {
 		Integer actionProfileID = profileDto.getActionProfileId();
 		Integer profileId = profileDto.getProfileId();
 		Dashboard actionProfile = dashboardRepository.findByProfileIdAndInterestedProfileId(actionProfileID, profileId);
-		// return this.updateAcceptReject(profileDto);
-		if (actionProfile != null) {
-			if (profileDto.getAction().equalsIgnoreCase("Accept")) {
-				actionProfile.setAcceptedProfileID(profileDto.getProfileId());
-				actionProfile.setAcceptedProfileName(profileDto.getProfileName());
-				actionProfile.setInterestedProfileId(null);
-				actionProfile.setInterestedProfileName(null);
-				actionProfile.setRejectedProfileId(null);
-				actionProfile.setRejectedProfileName(null);
-			} else if (profileDto.getAction().equalsIgnoreCase("Reject")) {
-				actionProfile.setRejectedProfileId(profileDto.getProfileId());
-				actionProfile.setRejectedProfileName(profileDto.getProfileName());
-				actionProfile.setInterestedProfileId(null);
-				actionProfile.setInterestedProfileName(null);
-				actionProfile.setAcceptedProfileID(null);
-				actionProfile.setAcceptedProfileName(null);
-			} else if (profileDto.getAction().equalsIgnoreCase("Interest")) {
-				actionProfile.setRejectedProfileId(profileDto.getProfileId());
-				actionProfile.setRejectedProfileName(profileDto.getProfileName());
-				actionProfile.setInterestedProfileId(null);
-				actionProfile.setInterestedProfileName(null);
-				actionProfile.setAcceptedProfileID(null);
-				actionProfile.setAcceptedProfileName(null);
-			}
-			newOrUpdated = dashboardRepository.save(actionProfile);
-		} else {
+		if (actionProfile == null) {
 			Dashboard newProfile = new Dashboard();
 			newProfile.setProfileId(profileDto.getActionProfileId());
 			newProfile.setProfileName(profileDto.getActionProfileName());
-			if (profileDto.getAction().equalsIgnoreCase("Accept")) {
-				newProfile.setAcceptedProfileID(profileDto.getProfileId());
-				newProfile.setAcceptedProfileName(profileDto.getProfileName());
-			} else if (profileDto.getAction().equalsIgnoreCase("Reject")) {
-				newProfile.setRejectedProfileId(profileDto.getProfileId());
-				newProfile.setRejectedProfileName(profileDto.getProfileName());
-			} else if (profileDto.getAction().equalsIgnoreCase("Interest")) {
-				newProfile.setInterestedProfileId(profileDto.getProfileId());
-				newProfile.setInterestedProfileName(profileDto.getProfileName());
+			if (profileDto.getAction().equalsIgnoreCase("Interest")) {
+			newProfile.setInterestedProfileId(profileDto.getProfileId());
+			newProfile.setInterestedProfileName(profileDto.getProfileName());
 			}
+			DashboardInterest dbi = new DashboardInterest();
+			dbi.setInterestProfileId(newProfile.getInterestedProfileId());
+			dbi.setInterestProfileName(newProfile.getInterestedProfileName());
+			dbi.setProfileId(newProfile.getProfileId());
+			dbi.setProfileName(newProfile.getProfileName());
+			dashboardInterestRepo.save(dbi);
 			newOrUpdated = dashboardRepository.save(newProfile);
 		}
 		return newOrUpdated;
@@ -188,5 +158,9 @@ public class MatrimonyServiceImpl implements MatrimonyService {
 
 		}
 		return lp;
+	}
+
+	public List<DashboardInterest> getInterestedDashboardProfile() {
+		return dashboardInterestRepo.findAll();
 	}
 }

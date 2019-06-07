@@ -18,6 +18,7 @@ import com.matrimony.dto.DashboardDto;
 import com.matrimony.dto.LoginDto;
 import com.matrimony.dto.ProfileDto;
 import com.matrimony.entity.Dashboard;
+import com.matrimony.entity.DashboardInterest;
 import com.matrimony.entity.Login;
 import com.matrimony.entity.Profile;
 import com.matrimony.service.MatrimonyService;
@@ -70,7 +71,7 @@ public class MatrimonyController {
     
     @PutMapping("/updateInterest")
     public ResponseEntity<Dashboard> updateInterest(@RequestBody DashboardDto dashboardDto) {
-		Dashboard dashboard = matrimonyService.updateAcceptReject(dashboardDto);
+		Dashboard dashboard = matrimonyService.updateInterest(dashboardDto);
         return new ResponseEntity<Dashboard>(dashboard, HttpStatus.OK);
     }
     @PutMapping("/updateAcceptReject")
@@ -78,5 +79,8 @@ public class MatrimonyController {
         Dashboard dashboard = matrimonyService.updateAcceptReject(profileDto);
         return new ResponseEntity<Dashboard>(dashboard, HttpStatus.OK);
     }
-    
+    @GetMapping("/getInterestedDashboardProfile")
+    public List<DashboardInterest> getInterestedDashboardProfile() {
+    	return matrimonyService.getInterestedDashboardProfile();
+    }
 }

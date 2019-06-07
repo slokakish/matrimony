@@ -8,6 +8,7 @@ import com.matrimony.dto.DashboardDto;
 import com.matrimony.dto.LoginDto;
 import com.matrimony.dto.ProfileDto;
 import com.matrimony.entity.Dashboard;
+import com.matrimony.entity.DashboardInterest;
 import com.matrimony.entity.Login;
 import com.matrimony.entity.Profile;
 
@@ -29,4 +30,6 @@ public interface MatrimonyService {
 	Dashboard updateInterest(DashboardDto profileDto);
 
 	public List<Profile> getFilteredProfile(Integer profileId);
+
+	List<DashboardInterest> getInterestedDashboardProfile();
 }
