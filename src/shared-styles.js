@@ -39,7 +39,9 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
       padding:5px;
       border:1px solid red;
     }
-
+body{
+  background-image: url("/images/bgimage.jpg");
+}
     #asb:hover{
       background-color: #ff6200!important;
       color:white;
