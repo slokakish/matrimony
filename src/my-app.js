@@ -113,7 +113,7 @@ class MyApp extends PolymerElement {
           <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
                    
                     
-                    <a name="dashboard" href="[[rootPath]]dashboard">DashBoard</a>
+                    <a name="dashboard" href="[[rootPath]]dashboard"></a>
                    
                     <a name="report" href="[[rootPath]]report"></a>
                     <a name="login" href="[[rootPath]]login"></a><!--Login-->

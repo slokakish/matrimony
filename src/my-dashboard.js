@@ -206,7 +206,7 @@ class DashboardElement extends PolymerElement {
                  <vaadin-grid-column width="9em" path="caste"></vaadin-grid-column>
                  <vaadin-grid-column width="9em" path="action">
                  <template> 
-                      <paper-button raised class="custom indigo" id="[[]]" data-set$={{item}} on-click="_interested">Interested</paper-button>
+                      <paper-button raised class="custom indigo bkg" id="[[]]" data-set$={{item}} on-click="_interested">Interested</paper-button>
                 </template>
                 </vaadin-grid-column>
          </vaadin-grid>
@@ -452,6 +452,11 @@ class DashboardElement extends PolymerElement {
     //this.prodctGroupName=type;        
     if(type=="profile"){
           this._getProfile();
+          this.profileListFlag =true;
+          this.interestedFlag =false;
+          this.acceptedFlag =false;
+          this.rejectedFlag=false;
+          
     }else if(type=="interested"){
      this._getInterested()
             this.interestedFlag =true;
@@ -460,8 +465,18 @@ class DashboardElement extends PolymerElement {
             this.profileListFlag =false;
     }else if(type=="accepted"){
       this._getAccepted();
+      this.acceptedFlag =true;
+      this.interestedFlag =false;
+     
+      this.rejectedFlag=false;
+      this.profileListFlag =false;
     }else{
       this._getRejected();
+      this.acceptedFlag =false;
+      this.interestedFlag =false;
+     
+      this.rejectedFlag=true;
+      this.profileListFlag =false;
          
     }
     
@@ -547,6 +562,7 @@ _getInterested(){
   }
 
 _getRejected(){
+    this.profileListFlag =false;
     let profileId =  localStorage.loggedInId;
     let ajaxRef = this.$.rejectedAjax;
     ajaxRef.method = "get"
@@ -558,7 +574,6 @@ _getRejected(){
     let data =event.detail.response;
      this.filteredRejected = event.detail.response;
      if(data){
-      this.profileListFlag =true;
       this.rejectedFlag=true;
       this.acceptedFlag =false;
       this.profileListFlag =false;
