@@ -79,8 +79,8 @@ public class MatrimonyController {
         Dashboard dashboard = matrimonyService.updateAcceptReject(profileDto);
         return new ResponseEntity<Dashboard>(dashboard, HttpStatus.OK);
     }
-    @GetMapping("/getInterestedDashboardProfile")
-    public List<DashboardInterest> getInterestedDashboardProfile() {
-    	return matrimonyService.getInterestedDashboardProfile();
+    @GetMapping("/getInterestedDashboardProfile/{profileId}")
+    public List<DashboardInterest> getInterestedDashboardProfile(@PathVariable Integer profileId) {
+    	return matrimonyService.getInterestedDashboardProfile(profileId);
     }
 }

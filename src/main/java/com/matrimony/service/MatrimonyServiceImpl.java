@@ -127,16 +127,16 @@ public class MatrimonyServiceImpl implements MatrimonyService {
 			newProfile.setProfileId(profileDto.getActionProfileId());
 			newProfile.setProfileName(profileDto.getActionProfileName());
 			if (profileDto.getAction().equalsIgnoreCase("Interest")) {
-			newProfile.setInterestedProfileId(profileDto.getProfileId());
-			newProfile.setInterestedProfileName(profileDto.getProfileName());
+				newProfile.setInterestedProfileId(profileDto.getProfileId());
+				newProfile.setInterestedProfileName(profileDto.getProfileName());
 			}
+			newOrUpdated = dashboardRepository.save(newProfile);
 			DashboardInterest dbi = new DashboardInterest();
 			dbi.setInterestProfileId(newProfile.getInterestedProfileId());
 			dbi.setInterestProfileName(newProfile.getInterestedProfileName());
 			dbi.setProfileId(newProfile.getProfileId());
 			dbi.setProfileName(newProfile.getProfileName());
 			dashboardInterestRepo.save(dbi);
-			newOrUpdated = dashboardRepository.save(newProfile);
 		}
 		return newOrUpdated;
 	}
@@ -160,7 +160,7 @@ public class MatrimonyServiceImpl implements MatrimonyService {
 		return lp;
 	}
 
-	public List<DashboardInterest> getInterestedDashboardProfile() {
-		return dashboardInterestRepo.findAll();
+	public List<DashboardInterest> getInterestedDashboardProfile(Integer profileId) {
+		return dashboardInterestRepo.findByProfileId(profileId);
 	}
 }

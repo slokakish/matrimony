@@ -31,5 +31,5 @@ public interface MatrimonyService {
 
 	public List<Profile> getFilteredProfile(Integer profileId);
 
-	List<DashboardInterest> getInterestedDashboardProfile();
+	List<DashboardInterest> getInterestedDashboardProfile(Integer profileId);
 }
